@@ -26,14 +26,16 @@
 template <typename TId, typename TValue> class Graph {
 	private:
 		TId nodeSize;
-		std::vector<TValue>dis;
 		std::vector<std::vector<std::pair<TId,TValue> > >edges;
 	public:
+		std::vector<TValue>dis;
+		std::vector<std::vector<TValue> >dist;
 		void insert(TId u,TId v,TValue val) {
 			assert(u<nodeSize&&v<nodeSize);
 			edges[u].push_back(std::make_pair(v,val));
 		}
-		bool Dijkstra(TId st) {
+		void Dijkstra(TId st) {
+			dis.resize(nodeSize);
 			assert(st<nodeSize);
 			std::fill(dis.begin(),dis.end(),0x3f3f3f3f);
 			std::priority_queue<std::pair<TId, TValue>>q;
@@ -51,14 +53,35 @@ template <typename TId, typename TValue> class Graph {
 					}
 				}
 			}
-			return true;
+		}
+		void Floyd(){
+			dist.resize(nodeSize);
+			for(TId i=0;i<nodeSize;++i){
+				dist[i].resize(nodeSize);
+				std::fill(dist[i].begin(),dist[i].end(),0x3f3f3f3f);	
+			}
+			for(TId u=0;u<nodeSize;++u){
+				for(TId j=0,lenv=edges[u].size();j<lenv;++j){
+					TId v=edges[u][j].first;
+					TValue w=edges[u][j].second;
+					dist[u][v]=w;
+				}dist[u][u]=0;
+			}
+			for(TId k=0;k<nodeSize;++k){
+				for(TId i=0;i<nodeSize;++i){
+					for(TId j=0;j<nodeSize;++j){
+						if(dist[i][k]+dist[k][j]<dist[i][j]){
+							dist[i][j]=dist[i][k]+dist[k][j];
+						}
+					}
+				}
+			}
 		}
 		int getNodeSize() {
 			return nodeSize;
 		}
-		Graph(int size) {
+		Graph(TId size) {
 			edges.resize(size);
-			dis.resize(size);
 			nodeSize=size;
 		}
 };
