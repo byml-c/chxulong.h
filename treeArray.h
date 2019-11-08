@@ -1,7 +1,7 @@
 /*treeArray*/
 #ifndef CSTDIO_INCLUDED
 #include<cstdio>
-#define SCTDIO_INCLUDED
+#define CSTDIO_INCLUDED
 #endif
 
 #ifndef VECTOR_INCLUDED
