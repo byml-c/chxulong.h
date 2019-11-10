@@ -28,7 +28,6 @@ template <typename TId, typename TValue> class Graph {
 		TId nodeSize;
 		std::vector<std::vector<std::pair<TId,TValue> > >edges;
 	public:
-		std::vector<std::vector<TValue> >dist;
 		void insert(TId u,TId v,TValue val) {
 			assert(u<nodeSize&&v<nodeSize);
 			edges[u].push_back(std::make_pair(v,val));
@@ -58,7 +57,8 @@ template <typename TId, typename TValue> class Graph {
 			}
 			return dis;
 		}
-		void Floyd(){
+		std::vector<std::vector<TValue> > Floyd(){
+			std::vector<std::vector<TValue> >dist;
 			dist.resize(nodeSize);
 			for(TId i=0;i<nodeSize;++i){
 				dist[i].resize(nodeSize);
@@ -80,6 +80,7 @@ template <typename TId, typename TValue> class Graph {
 					}
 				}
 			}
+			return dist;
 		}
 		int getNodeSize() {
 			return nodeSize;
