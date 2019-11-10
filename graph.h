@@ -28,13 +28,16 @@ template <typename TId, typename TValue> class Graph {
 		TId nodeSize;
 		std::vector<std::vector<std::pair<TId,TValue> > >edges;
 	public:
-		std::vector<TValue>dis;
 		std::vector<std::vector<TValue> >dist;
 		void insert(TId u,TId v,TValue val) {
 			assert(u<nodeSize&&v<nodeSize);
 			edges[u].push_back(std::make_pair(v,val));
 		}
-		void Dijkstra(TId st) {
+		//maybe we can optimize it...
+		//I don't think returning a std::vector is a choice.
+		//But never make a public:vector<typename>dis!!
+		std::vector<TValue> Dijkstra(TId st) {
+			std::vector<TValue>dis;
 			dis.resize(nodeSize);
 			assert(st<nodeSize);
 			std::fill(dis.begin(),dis.end(),0x3f3f3f3f);
@@ -53,6 +56,7 @@ template <typename TId, typename TValue> class Graph {
 					}
 				}
 			}
+			return dis;
 		}
 		void Floyd(){
 			dist.resize(nodeSize);
